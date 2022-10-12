@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('name');
+            $table->string('title');
             $table->boolean('completed')->default(false)->comment('false=un-completed,true=completed');
 
             $table->foreign('user_id')->on('users')->references('id')->cascadeOnDelete();

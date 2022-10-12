@@ -171,6 +171,7 @@ return [
         'email' => 'E-mail',
         'password' => 'Şifre',
         'passwordAgain' => 'Şifre Tekrarı',
+        'title' => 'Başlık'
     ],
 
 ];

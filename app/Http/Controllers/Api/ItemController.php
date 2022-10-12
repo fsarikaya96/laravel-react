@@ -17,9 +17,10 @@ class ItemController extends Controller
      *
      * @return Response
      */
-    public function index():object
+    public function index(): object
     {
-        $items = Item::orderBy('id','DESC')->get();
+        $items = Item::orderBy('id', 'DESC')->get();
+
         return ResponseResult::generate(true, $items, ResponseCodes::HTTP_OK);
     }
 
@@ -39,7 +40,7 @@ class ItemController extends Controller
      *
      * @return Response
      */
-    public function store(ItemRequest $request):object
+    public function store(ItemRequest $request): object
     {
         if ($request->validator->fails()) {
             return ResponseResult::generate(false, $request->validator->messages(), ResponseCodes::HTTP_BAD_REQUEST);
@@ -47,10 +48,10 @@ class ItemController extends Controller
 
         $item = Item::create([
             'user_id' => auth()->user()->id,
-            'name'    => $request->name,
+            'title'   => $request->title,
         ]);
-        return ResponseResult::generate(true, $item, ResponseCodes::HTTP_OK);
 
+        return ResponseResult::generate(true, $item, ResponseCodes::HTTP_OK);
     }
 
     /**
@@ -85,9 +86,12 @@ class ItemController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): object
     {
-        //
+        $item = Item::findOrFail($id);
+        $item->update(['title' => $request->title, 'completed' => $request->completed]);
+
+        return ResponseResult::generate(true, $item, ResponseCodes::HTTP_OK);
     }
 
     /**
@@ -97,9 +101,10 @@ class ItemController extends Controller
      *
      * @return Response
      */
-    public function destroy($id) :object
+    public function destroy($id): object
     {
         $item = Item::findOrFail($id)->delete();
+
         return ResponseResult::generate(true, $item, ResponseCodes::HTTP_OK);
     }
 }
