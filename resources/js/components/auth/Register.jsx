@@ -27,7 +27,7 @@ class Register extends Component {
             console.log(res.data.message);
             await swal({
                 title: "Başarılı",
-                text: "Kayıt Başarılı : " + res.data.message.name,
+                text: "Kayıt Başarılı : " + res.data.message.user.name,
                 icon: "success",
                 button: "Tamam",
             });

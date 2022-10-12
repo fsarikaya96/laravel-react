@@ -15,6 +15,7 @@ function Navbar() {
             if (res.data.success === true) {
                 localStorage.removeItem('auth_token');
                 localStorage.removeItem('auth_name');
+                localStorage.removeItem('auth_id');
                 localStorage.removeItem('role_as');
                 await swal({
                     title: "Başarılı",

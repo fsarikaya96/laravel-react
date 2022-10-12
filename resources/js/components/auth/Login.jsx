@@ -20,11 +20,12 @@ class Login extends Component {
         await axios.post('api/login', this.state).then(async (res) => {
             console.log(res.data.message);
             localStorage.setItem('auth_token', res.data.message.token);
-            localStorage.setItem('auth_name', res.data.message.name);
-            localStorage.setItem('role_as', res.data.message.role_as);
+            localStorage.setItem('auth_id', res.data.message.user.id);
+            localStorage.setItem('auth_name', res.data.message.user.name);
+            localStorage.setItem('role_as', res.data.message.user.role_as);
             await swal({
                 title: "Başarılı",
-                text: "Hoşgeldiniz : " + res.data.message.name,
+                text: "Hoşgeldiniz : " + res.data.message.user.name,
                 icon: "success",
                 button: "Tamam",
             });

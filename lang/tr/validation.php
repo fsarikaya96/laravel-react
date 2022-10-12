@@ -170,7 +170,7 @@ return [
         'name' => 'İsim Soyisim',
         'email' => 'E-mail',
         'password' => 'Şifre',
-        'passwordAgain' => 'Şifre Tekrarı'
+        'passwordAgain' => 'Şifre Tekrarı',
     ],
 
 ];

@@ -58,7 +58,7 @@ class UserService implements IUserService
         if (Auth::attempt($request->except('error_list'))) {
             $user = $this->userRepository->generateToken($this->_getLoggedUser());
 
-            return ResponseResult::generate(true, ['name' => Auth::user()->name,'role_as' => Auth::user()->role_as,'token' => $user], ResponseCodes::HTTP_OK);
+            return ResponseResult::generate(true, ['user' => Auth::user(),'token' => $user], ResponseCodes::HTTP_OK);
         }
 
         return ResponseResult::generate(false, ['notFound' => "Böyle Bir Kullanıcı Bulunamadı."], ResponseCodes::HTTP_NOT_FOUND);
