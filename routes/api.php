@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('register', [\App\Http\Controllers\Api\AuthController::class, 'register']);
 Route::post('login', [\App\Http\Controllers\Api\AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::post('items/search/{search}',[\App\Http\Controllers\Api\ItemController::class,'search']);
     Route::resource('items',\App\Http\Controllers\Api\ItemController::class);
     Route::post('logout', [\App\Http\Controllers\Api\AuthController::class, 'logout']);
 });

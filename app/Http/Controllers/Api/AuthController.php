@@ -5,30 +5,46 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Http\Service\Interfaces\IUserService;
+use App\Service\Interfaces\IUserService;
 
 class AuthController extends Controller
 {
     private IUserService $userService;
 
+    /**
+     * User Construct
+     * @param IUserService $IUserService
+     */
     public function __construct(IUserService $IUserService)
     {
         $this->userService = $IUserService;
     }
 
-    public function register(RegisterRequest $request)
+    /**
+     * @param RegisterRequest $request
+     *
+     * @return object
+     */
+    public function register(RegisterRequest $request):object
     {
         return $this->userService->register($request);
     }
 
-    public function login(LoginRequest $request)
+    /**
+     * @param LoginRequest $request
+     *
+     * @return object
+     */
+    public function login(LoginRequest $request):object
     {
         return $this->userService->generateToken($request);
     }
 
-    public function logout()
+    /**
+     * @return object
+     */
+    public function logout():object
     {
-        auth()->user()->tokens()->delete();
-        return response()->json(['success' => true,'message' => 'Çıkış Başarılı']);
+        return $this->userService->deleteToken();
     }
 }

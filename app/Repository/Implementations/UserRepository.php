@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Repository\Implementations;
+namespace App\Repository\Implementations;
 
-use App\Http\Repository\Interfaces\IUserRepository;
 use App\Models\User;
+use App\Repository\Interfaces\IUserRepository;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 class UserRepository implements IUserRepository
@@ -22,5 +22,9 @@ class UserRepository implements IUserRepository
     public function generateToken(Authenticatable $auth): string
     {
         return $auth->createToken('myApp')->plainTextToken;
+    }
+    public function deleteToken(Authenticatable $auth): bool
+    {
+        return $auth->tokens()->delete();
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Http\Repository\RepositoryIoCRegister;
-use App\Http\Service\ServiceIoCRegister;
+use App\Repository\RepositoryIoCRegister;
+use App\Service\ServiceIoCRegister;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

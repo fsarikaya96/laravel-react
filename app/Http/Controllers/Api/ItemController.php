@@ -5,13 +5,24 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ItemRequest;
 use App\Models\Item;
-use Illuminate\Http\Request;
+use App\Service\Interfaces\IItemService;
+use Illuminate\Http\Client\Request;
 use Illuminate\Http\Response;
-use Justfeel\Response\ResponseCodes;
 use Justfeel\Response\ResponseResult;
 
 class ItemController extends Controller
 {
+    private IItemService $itemService;
+
+    /**
+     * Item construct
+     * @param IItemService $IItemService
+     */
+    public function __construct(IItemService $IItemService)
+    {
+        $this->itemService = $IItemService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,39 +30,19 @@ class ItemController extends Controller
      */
     public function index(): object
     {
-        $items = Item::orderBy('id', 'DESC')->get();
-
-        return ResponseResult::generate(true, $items, ResponseCodes::HTTP_OK);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create(Request $request)
-    {
+        return $this->itemService->getItemsByUser();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param ItemRequest $request
      *
      * @return Response
      */
     public function store(ItemRequest $request): object
     {
-        if ($request->validator->fails()) {
-            return ResponseResult::generate(false, $request->validator->messages(), ResponseCodes::HTTP_BAD_REQUEST);
-        }
-
-        $item = Item::create([
-            'user_id' => auth()->user()->id,
-            'title'   => $request->title,
-        ]);
-
-        return ResponseResult::generate(true, $item, ResponseCodes::HTTP_OK);
+        return $this->itemService->store($request);
     }
 
     /**
@@ -61,37 +52,23 @@ class ItemController extends Controller
      *
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): object
     {
-        //
+        return $this->itemService->getItemById($id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param ItemRequest $request
      * @param int $id
      *
      * @return Response
      */
-    public function update(Request $request, int $id): object
+    public function update(ItemRequest $request, int $id): object
     {
-        $item = Item::findOrFail($id);
-        $item->update(['title' => $request->title, 'completed' => $request->completed]);
-
-        return ResponseResult::generate(true, $item, ResponseCodes::HTTP_OK);
+        return $this->itemService->update($request, $id);
     }
 
     /**
@@ -99,12 +76,12 @@ class ItemController extends Controller
      *
      * @param int $id
      *
-     * @return Response
+     * @return object
      */
-    public function destroy($id): object
+    public function destroy(int $id): object
     {
-        $item = Item::findOrFail($id)->delete();
-
-        return ResponseResult::generate(true, $item, ResponseCodes::HTTP_OK);
+        return $this->itemService->delete($id);
     }
+
+
 }

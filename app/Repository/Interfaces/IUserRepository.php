@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Repository\Interfaces;
+namespace App\Repository\Interfaces;
 
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -20,4 +20,6 @@ interface IUserRepository
      * @return string
      */
     public function generateToken(Authenticatable $auth) :string;
+
+    public function deleteToken(Authenticatable $auth):bool;
 }

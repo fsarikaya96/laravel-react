@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('title');
-            $table->boolean('completed')->default(false)->comment('false=un-completed,true=completed');
+            $table->tinyInteger('completed')->default(0)->comment('0=un-completed,1=completed');
 
             $table->foreign('user_id')->on('users')->references('id')->cascadeOnDelete();
             $table->timestamps();

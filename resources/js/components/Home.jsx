@@ -6,13 +6,18 @@ class Home extends Component {
     constructor(props) {
         super(props);
 
+        const ITEM_STATES = {
+            ALL: "",
+            COMPLETED: 0,
+            UNCOMPLETED: 1
+        }
+
         this.state = {
             items: [],
-            title: '',
             error: '',
-            completed: '',
+            search: '',
+            showItemsState: ITEM_STATES.ALL
         }
-        this.onTodoChange = this.onTodoChange.bind(this)
     }
 
     handleInput = (e) => {
@@ -31,10 +36,12 @@ class Home extends Component {
         e.preventDefault();
         const _this = this;
         await axios.post('api/items', this.state).then(async (res) => {
+            console.log(res.data.message);
             _this.setState({
                 items: [..._this.state.items, res.data.message],
                 title: '',
                 error: '',
+
             });
         }).catch(function (e) {
             _this.setState({
@@ -65,10 +72,13 @@ class Home extends Component {
      * @returns {Promise<void>}
      */
     itemDelete = async (e, id) => {
-        const deleteBtn = e.currentTarget;
+        let updatedItems = this.state.items;
         const res = await axios.delete(`api/items/${id}`)
         if (res.data.success === true) {
-            deleteBtn.closest("div").remove();
+            updatedItems = updatedItems.filter(items => items.id !== id);
+            this.setState({
+                items: updatedItems
+            });
         }
     }
 
@@ -112,12 +122,31 @@ class Home extends Component {
         console.log(res.data.message);
 
         this.setState({
-            items: this.state.items
+            items: this.state.items,
+
+        });
+    }
+
+    setFilter = async (status) => {
+
+        let itemStates;
+
+        if (status === "0") {
+            itemStates = 0;
+        } else if (status === "1") {
+            itemStates = 1;
+        } else {
+            itemStates = "";
+        }
+
+        this.setState({
+            showItemsState: itemStates,
         });
     }
 
     render() {
         const {items} = this.state;
+        console.log(this.state.showItemsState);
         return (
             <div className="container ">
                 <div className="row justify-content-center">
@@ -133,28 +162,57 @@ class Home extends Component {
                             <span className="text-danger">{this.state.error.title}</span>
                         </form>
 
+                        <div className="row mt-2">
+                            <div className="col">
+                                <input type="text" name="search" onChange={this.handleInput} value={this.state.search}
+                                       className="form-control" placeholder="Ara.."/>
+                            </div>
+                            <div className="col">
+                                <select className="form-select" onChange={e => this.setFilter(e.target.value)}>
+                                    <option value="">Hepsi</option>
+                                    <option value="1">Tamamlananlar</option>
+                                    <option value="0">Tamamlanmayanlar</option>
+                                </select>
+                            </div>
+                        </div>
                         {
                             <div className="card mt-2">
                                 <div className="card-body">
-                                    {items.map(item => (
-                                        <div style={{display: "flex"}} key={item.id}>
-                                            <input type="checkbox"
-                                                   onChange={e => this.onTodoChangeCompleted(item.id, e.target.checked)}
-                                                   checked={item.completed}
-                                            />
-                                            <input type="text" className="form-control mb-2 editInputs" value={item.title}
-                                                   onChange={e => this.onTodoChange(item.id, e.target.value)}/>
-                                            <button type="button" style={{margin: "10px"}}
-                                                    onClick={(e) => this.itemUpdate(e, item.id)}
-                                                    className="btn btn-success btn-sm">Güncelle
-                                            </button>
-                                            <button type="button" style={{margin: "10px"}}
-                                                    onClick={(e) => this.itemDelete(e, item.id)}
-                                                    className="btn btn-danger btn-sm">Sil
-                                            </button>
+                                    {this.state.items.length <= 0 ? <span>İçerik Bulunamadı</span>
+                                        : items.filter((val) => {
+                                            if (this.state.search === "") {
+                                                return val;
+                                            } else if (val.title.toLowerCase().includes(this.state.search.toLowerCase())) {
+                                                return val;
+                                            }
 
-                                        </div>
-                                    ))}
+                                        }).filter((val) => {
+                                            if (val.completed === this.state.showItemsState) {
+                                                return val;
+                                            }else if (this.state.showItemsState === "") {
+                                                return val;
+                                            }
+                                        }).map(item => (
+                                            <div style={{display: "flex"}} key={item.id}>
+                                                <input type="checkbox"
+                                                       onChange={e => this.onTodoChangeCompleted(item.id, e.target.checked)}
+                                                       checked={item.completed}
+                                                />
+                                                <input type="text"
+                                                       className={item.completed === 1 ? 'line form-control mb-2 editInputs' : 'form-control mb-2 editInputs'}
+                                                       value={item.title}
+                                                       onChange={e => this.onTodoChange(item.id, e.target.value)}/>
+                                                <button type="button" style={{margin: "10px"}}
+                                                        onClick={(e) => this.itemUpdate(e, item.id)}
+                                                        className="btn btn-success btn-sm">Güncelle
+                                                </button>
+                                                <button type="button" style={{margin: "10px"}}
+                                                        onClick={(e) => this.itemDelete(e, item.id)}
+                                                        className="btn btn-danger btn-sm">Sil
+                                                </button>
+
+                                            </div>
+                                        ))}
                                 </div>
                             </div>
                         }
