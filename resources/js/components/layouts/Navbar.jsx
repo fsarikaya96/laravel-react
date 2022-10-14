@@ -102,10 +102,22 @@ function Navbar() {
 
                 <Route path="/"
                        element={!localStorage.getItem('auth_token') ? <Navigate to="/login" replace/> : <Home/>}/>
-                <Route path="/admin" element={<Admin/>}/>
+
+                <Route path="/admin"
+                       element={(
+                           (localStorage.getItem('role_as') === "0") ? <Navigate to="/" replace/> :
+                               !localStorage.getItem('auth_token') ? <Navigate to="/login" replace/> :
+                                   <Admin/>
+                       )}
+                />
 
                 <Route path="/login"
-                       element={localStorage.getItem('auth_token') ? <Navigate to="/" replace/> : <Login/>}/>
+                       element={(
+                           (localStorage.getItem('role_as') === "1") ? <Navigate to="/admin" replace/> :
+                               (localStorage.getItem('role_as') === "0") ? <Navigate to="/" replace/> :
+                                   <Login/>
+                       )}
+                />
                 <Route path="/register"
                        element={localStorage.getItem('auth_token') ? <Navigate to="/" replace/> : <Register/>}/>
 

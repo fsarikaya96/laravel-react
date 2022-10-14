@@ -114,4 +114,23 @@ class UserService implements IUserService
             ]);
         }
     }
+
+    /**
+     * @return object
+     * @throws ValidationException
+     */
+    public function users(): object
+    {
+        Log::channel('api')->info("UserService called --> Request users() function");
+        try {
+            $this->userRepository->deleteToken(auth()->user());
+            Log::channel('api')->info("UserService called --> Return guest users");
+
+            return ResponseResult::generate(true, $this->userRepository->users(), ResponseCodes::HTTP_OK);
+        } catch (\Exception $exception) {
+            throw ValidationException::withMessages([
+                ResponseResult::generate(false, $exception->getMessage(), ResponseCodes::HTTP_BAD_REQUEST),
+            ]);
+        }
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Repository\Implementations;
 
 use App\Models\Item;
 use App\Repository\Interfaces\IItemRepository;
+use Illuminate\Support\Collection;
 
 class ItemRepository implements IItemRepository
 {
@@ -17,8 +18,18 @@ class ItemRepository implements IItemRepository
     }
 
     /**
+     * Item list that only admins can see Repository
+     * @return Collection
+     */
+    public function getItemListByAdmin(): Collection
+    {
+        return Item::with('user')->orderBy('id', 'DESC')->get();
+    }
+
+    /**
      * @param int $id
      * Fetch item by ID Repository
+     *
      * @return Item
      */
     public function getItemById(int $id): Item
@@ -29,6 +40,7 @@ class ItemRepository implements IItemRepository
     /**
      * @param Item $item
      * Insert Item Repository
+     *
      * @return Item
      */
     public function store(Item $item): Item
@@ -41,6 +53,7 @@ class ItemRepository implements IItemRepository
     /**
      * @param Item $item
      * Update Item Repository
+     *
      * @return Item
      */
     public function update(Item $item): Item
@@ -53,11 +66,11 @@ class ItemRepository implements IItemRepository
     /**
      * @param Item $item
      * Delete Item Repository
+     *
      * @return bool
      */
     public function delete(Item $item): bool
     {
         return $item->delete();
     }
-
 }

@@ -1,14 +1,24 @@
-# Laravel React
+# Laravel React Todo App
 
 # Install
 
 **1. Clone Project**
 
 ```
-  $ https://github.com/fsarikaya96/laravel-react-api.git
+  $ https://github.com/fsarikaya96/laravel-react.git
+  $ cd laravel-react
+```
+**2. Install**
+
+```
+  $ composer install
+  $ composer require laravel/sanctum
+  $ php artisan key:generate
+  $ php artisan migrate 
+  $ php artisan db:seed
 ```
 
-**2. npm Install**
+**3. npm Install**
 
 ```
   $ npm install vite laravel-vite-plugin --save-dev
@@ -18,3 +28,13 @@
   $ npm install react-router-dom
   $ npm install sweetalert --save
 ```
+
+## Using
+
+```
+  Domain Driven Design
+  Dependency Injection
+  Logger
+  Custom ResponseResult
+```
+

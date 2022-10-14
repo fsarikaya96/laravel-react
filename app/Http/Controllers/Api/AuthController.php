@@ -12,7 +12,8 @@ class AuthController extends Controller
     private IUserService $userService;
 
     /**
-     * User Construct
+     * AuthController Construct
+     *
      * @param IUserService $IUserService
      */
     public function __construct(IUserService $IUserService)
@@ -25,7 +26,7 @@ class AuthController extends Controller
      *
      * @return object
      */
-    public function register(RegisterRequest $request):object
+    public function register(RegisterRequest $request): object
     {
         return $this->userService->register($request);
     }
@@ -35,7 +36,7 @@ class AuthController extends Controller
      *
      * @return object
      */
-    public function login(LoginRequest $request):object
+    public function login(LoginRequest $request): object
     {
         return $this->userService->generateToken($request);
     }
@@ -43,8 +44,16 @@ class AuthController extends Controller
     /**
      * @return object
      */
-    public function logout():object
+    public function logout(): object
     {
         return $this->userService->deleteToken();
+    }
+
+    /**
+     * @return object
+     */
+    public function users(): object
+    {
+        return $this->userService->users();
     }
 }

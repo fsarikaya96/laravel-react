@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from "axios";
-import {Link} from "react-router-dom";
+
 
 class Home extends Component {
 
@@ -16,11 +16,13 @@ class Home extends Component {
         this.state = {
             items: [],
             error: '',
+            title:'',
             search: '',
             showItemsState: ITEM_STATES.ALL,
             currentPage: 1,
-            itemsPerPage: 5,
+            itemsPerPage: 10,
         }
+
     }
 
     handleInput = (e) => {
@@ -41,7 +43,7 @@ class Home extends Component {
         await axios.post('api/items', this.state).then(async (res) => {
             console.log(res.data.message);
             _this.setState({
-                items: [..._this.state.items, res.data.message],
+                items: [res.data.message , ..._this.state.items],
                 title: '',
                 error: '',
 
@@ -147,14 +149,17 @@ class Home extends Component {
         } else {
             itemStates = "";
         }
-
         this.setState({
             showItemsState: itemStates,
         });
     }
 
+    /**
+     * Paginate
+     * @param e
+     */
     paginate = (e) => {
-        this.setState({'currentPage':e.target.text});
+        this.setState({'currentPage': e.target.text});
     }
 
     render() {

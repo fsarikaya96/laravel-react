@@ -3,6 +3,7 @@
 namespace App\Repository\Interfaces;
 
 use App\Models\Item;
+use Illuminate\Support\Collection;
 
 interface IItemRepository
 {
@@ -11,6 +12,12 @@ interface IItemRepository
      * @return object
      */
     public function getItemsByUser(): object;
+
+    /**
+     * Item list that only admins can see Repository
+     * @return Collection
+     */
+    public function getItemListByAdmin(): Collection;
 
     /**
      * @param int $id

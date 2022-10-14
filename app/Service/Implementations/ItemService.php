@@ -44,6 +44,24 @@ class ItemService implements IItemService
     }
 
     /**
+     * @return object
+     * @throws ValidationException
+     */
+    public function getItemListByAdmin(): object
+    {
+        Log::channel('api')->info("ItemService called --> Request getItemListByAdmin() function");
+        try {
+            Log::channel('api')->info("ItemService called --> Return all items by admin");
+
+            return ResponseResult::generate(true, $this->itemRepository->getItemListByAdmin(), ResponseCodes::HTTP_OK);
+        } catch (\Exception $exception) {
+            throw ValidationException::withMessages([
+                ResponseResult::generate(false, $exception->getMessage(), ResponseCodes::HTTP_BAD_REQUEST),
+            ]);
+        }
+    }
+
+    /**
      * @param int $id
      *
      * @return object

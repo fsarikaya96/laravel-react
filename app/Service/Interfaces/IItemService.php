@@ -14,6 +14,12 @@ interface IItemService
     public function getItemsByUser(): object;
 
     /**
+     * Item list that only admins can see Service
+     * @return object
+     */
+    public function getItemListByAdmin(): object;
+
+    /**
      * @param int $id
      * Fetch item by ID Service
      *

@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Item;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,11 +15,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('items')->truncate();
+        DB::table('users')->truncate();
+        $this->call(UserSeeder::class);
+        Item::factory(50)->create();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

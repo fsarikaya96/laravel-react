@@ -4,18 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ItemRequest;
-use App\Models\Item;
 use App\Service\Interfaces\IItemService;
-use Illuminate\Http\Client\Request;
 use Illuminate\Http\Response;
-use Justfeel\Response\ResponseResult;
 
 class ItemController extends Controller
 {
     private IItemService $itemService;
 
     /**
-     * Item construct
+     * ItemController construct
+     *
      * @param IItemService $IItemService
      */
     public function __construct(IItemService $IItemService)
@@ -83,5 +81,11 @@ class ItemController extends Controller
         return $this->itemService->delete($id);
     }
 
-
+    /**
+     * @return object
+     */
+    public function showAdminItems(): object
+    {
+        return $this->itemService->getItemListByAdmin();
+    }
 }

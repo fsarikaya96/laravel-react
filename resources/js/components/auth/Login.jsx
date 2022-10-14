@@ -18,7 +18,6 @@ class Login extends Component {
         e.preventDefault();
         const _this = this;
         await axios.post('api/login', this.state).then(async (res) => {
-            console.log(res.data.message);
             localStorage.setItem('auth_token', res.data.message.token);
             localStorage.setItem('auth_id', res.data.message.user.id);
             localStorage.setItem('auth_name', res.data.message.user.name);
@@ -33,7 +32,7 @@ class Login extends Component {
                 email: '',
                 password: '',
             });
-            if (res.data.message.role_as === 1) {
+            if (res.data.message.user.role_as === 1) {
                 navigation.navigate('/admin');
             } else {
                 navigation.navigate('/');

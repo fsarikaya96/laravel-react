@@ -39,7 +39,7 @@ class ItemRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|min:2',
+            'title' => 'required|min:5',
         ];
         /*if (in_array($this->method(), ['PUT', 'PATCH'])) {
             $rules['completed'] = ['nullable'];
