@@ -1,6 +1,6 @@
 # Laravel React Todo App
 
-# Install
+## Install
 
 **1. Clone Project**
 
@@ -11,8 +11,8 @@
 **2. Install**
 
 ```
+  $ cp .env.example .env
   $ composer install
-  $ composer require laravel/sanctum
   $ php artisan key:generate
   $ php artisan migrate 
   $ php artisan db:seed
@@ -21,15 +21,21 @@
 **3. npm Install**
 
 ```
-  $ npm install vite laravel-vite-plugin --save-dev
-  $ npm install @vitejs/plugin-react --force
-  $ npm install react@latest react-dom@latest
+  $ npm install
   $ npm install axios
   $ npm install react-router-dom
   $ npm install sweetalert --save
 ```
 
-## Using
+**4. Run Project**
+
+```
+  $ npm run dev
+  $ php artisan serve
+```
+
+
+### Using
 
 ```
   Domain Driven Design
