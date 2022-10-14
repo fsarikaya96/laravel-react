@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 class Home extends Component {
 
@@ -16,7 +17,9 @@ class Home extends Component {
             items: [],
             error: '',
             search: '',
-            showItemsState: ITEM_STATES.ALL
+            showItemsState: ITEM_STATES.ALL,
+            currentPage: 1,
+            itemsPerPage: 5,
         }
     }
 
@@ -63,6 +66,7 @@ class Home extends Component {
                 }
             )
         }
+
     }
 
     /**
@@ -127,6 +131,11 @@ class Home extends Component {
         });
     }
 
+    /**
+     * Filter by Completed & UnCompleted
+     * @param status
+     * @returns {Promise<void>}
+     */
     setFilter = async (status) => {
 
         let itemStates;
@@ -144,9 +153,31 @@ class Home extends Component {
         });
     }
 
+    paginate = (e) => {
+        this.setState({'currentPage':e.target.text});
+    }
+
     render() {
         const {items} = this.state;
-        console.log(this.state.showItemsState);
+        const indexOfLastItem = this.state.currentPage * this.state.itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - this.state.itemsPerPage;
+        const currentItems = this.state.items.slice(indexOfFirstItem, indexOfLastItem);
+        const pageNumbers = [];
+
+        for (let i = 1; i <= Math.ceil(items.length / this.state.itemsPerPage); i++) {
+            pageNumbers.push(i);
+        }
+
+        const pages = pageNumbers.map(number => {
+            return (
+                <li key={number.toString()} className="page-item">
+                    <a onClick={this.paginate} href="#" className="page-link">
+                        {number}
+                    </a>
+                </li>
+            )
+        });
+
         return (
             <div className="container ">
                 <div className="row justify-content-center">
@@ -179,7 +210,7 @@ class Home extends Component {
                             <div className="card mt-2">
                                 <div className="card-body">
                                     {this.state.items.length <= 0 ? <span>İçerik Bulunamadı</span>
-                                        : items.filter((val) => {
+                                        : currentItems.filter((val) => {
                                             if (this.state.search === "") {
                                                 return val;
                                             } else if (val.title.toLowerCase().includes(this.state.search.toLowerCase())) {
@@ -189,7 +220,7 @@ class Home extends Component {
                                         }).filter((val) => {
                                             if (val.completed === this.state.showItemsState) {
                                                 return val;
-                                            }else if (this.state.showItemsState === "") {
+                                            } else if (this.state.showItemsState === "") {
                                                 return val;
                                             }
                                         }).map(item => (
@@ -216,6 +247,11 @@ class Home extends Component {
                                 </div>
                             </div>
                         }
+                        <nav>
+                            <ul className="pagination">
+                                {pages}
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
