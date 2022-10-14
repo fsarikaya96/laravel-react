@@ -5,7 +5,7 @@
 **1. Clone Project**
 
 ```
-  $ https://github.com/fsarikaya96/laravel-react.git
+  $ git clone https://github.com/fsarikaya96/laravel-react.git
   $ cd laravel-react
 ```
 **2. Install**
