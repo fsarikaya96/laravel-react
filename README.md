@@ -40,6 +40,7 @@
 ```
   Domain Driven Design
   Dependency Injection
+  Exception
   Logger
   Custom ResponseResult
 ```
