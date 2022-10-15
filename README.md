@@ -42,6 +42,7 @@
   Dependency Injection
   Exception
   Logger
+  Sanctum (JWT)
   Custom ResponseResult
 ```
 
